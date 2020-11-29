@@ -2,3 +2,4 @@ plan.txt
 .history
 node_modules
 app/config
+yarn-error.log
