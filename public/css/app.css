@@ -27,12 +27,14 @@ nav li a:hover {
 
 .btn-primary:hover {
   background: #b23301;
+  outline: none;
 }
 
 .add-to-cart {
   border: 2px solid #fe5f1e;
   color: #fe5f1e;
   transition: all 0.3s ease-in-out;
+  outline: none;
 }
 
 .add-to-cart:hover {
@@ -43,5 +45,26 @@ nav li a:hover {
 
 .add-to-cart:focus {
   outline: none;
+}
+
+section.cart {
+  background: #f8f8f8;
+}
+
+section.cart .amount {
+  color: #fe5f1e;
+}
+
+section.login {
+  background: #f8f8f8;
+  min-height: calc(100vh - 86px);
+}
+
+section.login a {
+  color: #fe5f1e;
+}
+
+section.login a:hover {
+  color: #b23301;
 }
 
