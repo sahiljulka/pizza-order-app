@@ -1,15 +1,16 @@
 const router = require("express").Router();
+const homeController = require("../app/http/controllers/homeController");
+const authController = require("../app/http/controllers/authController");
+const cartController = require("../app/http/controllers/cartController");
 
-router.get("/cart", (req, res) => {
-  res.render("./customers/cart");
-});
+router.get("/", homeController().index);
 
-router.get("/login", (req, res) => {
-  res.render("./auth/login");
-});
+router.get("/cart", cartController().index);
 
-router.get("/register", (req, res) => {
-  res.render("./auth/register");
-});
+router.post("/update-cart", cartController().update);
+
+router.get("/login", authController().login);
+
+router.get("/register", authController().register);
 
 module.exports = router;
