@@ -5,13 +5,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "npm run development -- --watch"
+    "watch": "npm run development -- --watch",
+    "start":"nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "keywords": [],
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
@@ -20,7 +22,9 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.17.1",
     "mongoose": "^5.10.19",
-    "noty": "^3.2.0-beta"
+    "noty": "^3.2.0-beta",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",

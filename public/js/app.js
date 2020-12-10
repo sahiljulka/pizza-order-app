@@ -4020,9 +4020,8 @@ function _updateCart() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log(pizza);
-            _context.prev = 1;
-            _context.next = 4;
+            _context.prev = 0;
+            _context.next = 3;
             return fetch("/update-cart", {
               method: "POST",
               body: pizza,
@@ -4031,12 +4030,12 @@ function _updateCart() {
               }
             });
 
-          case 4:
+          case 3:
             response = _context.sent;
-            _context.next = 7;
+            _context.next = 6;
             return response.json();
 
-          case 7:
+          case 6:
             res = _context.sent;
             new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
               type: "success",
@@ -4045,12 +4044,12 @@ function _updateCart() {
               progressBar: false
             }).show();
             counterLabel.innerText = res.totalQty;
-            _context.next = 15;
+            _context.next = 14;
             break;
 
-          case 12:
-            _context.prev = 12;
-            _context.t0 = _context["catch"](1);
+          case 11:
+            _context.prev = 11;
+            _context.t0 = _context["catch"](0);
             new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
               type: "error",
               text: "Something went wrong",
@@ -4058,12 +4057,12 @@ function _updateCart() {
               progressBar: false
             }).show();
 
-          case 15:
+          case 14:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 12]]);
+    }, _callee, null, [[0, 11]]);
   }));
   return _updateCart.apply(this, arguments);
 }

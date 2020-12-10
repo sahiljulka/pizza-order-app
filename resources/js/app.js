@@ -5,7 +5,6 @@ const addToCartButtons = $(".add-to-cart");
 const counterLabel = $(".counter")[0];
 
 async function updateCart(pizza) {
-  console.log(pizza);
   try {
     const response = await fetch("/update-cart", {
       method: "POST",

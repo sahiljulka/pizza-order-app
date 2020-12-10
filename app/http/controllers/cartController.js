@@ -1,7 +1,6 @@
 function cartController() {
   return {
     index(req, res) {
-      console.log(req.session);
       return res.render("./customers/cart");
     },
     update(req, res) {

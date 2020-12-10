@@ -8,6 +8,8 @@ const { connectDB } = require("./app/config/db");
 const session = require("express-session");
 const flash = require("express-flash");
 const MongoDbStore = require("connect-mongo")(session);
+const passport = require("passport");
+const passportInit = require("./app/config/passport");
 
 require("dotenv").config({
   path: `${path.join(__dirname, "/app/config/.env")}`,
@@ -34,15 +36,23 @@ app.use(
   })
 );
 
+passportInit(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 /**
  * stores the cookie in mongostore in collections name
  * deletes the cookie from store after expiry date
  */
 app.use(flash());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.locals.session = req.session;
+  console.log("******");
+  console.log(req.session);
+  res.locals.user = req.user;
   next();
 });
 
