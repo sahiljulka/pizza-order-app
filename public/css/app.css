@@ -330,8 +330,11 @@ nav li a:hover {
   transition: all 0.3s ease-in-out;
 }
 
-.btn-primary:hover {
-  background: #b23301;
+.btn {
+  outline: none;
+}
+
+.btn:hover {
   outline: none;
 }
 

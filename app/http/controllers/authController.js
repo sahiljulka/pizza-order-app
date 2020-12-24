@@ -1,8 +1,41 @@
 const bcrypt = require("bcrypt");
 const User = require("../../models/user");
 const passport = require("passport");
+var mongoose = require("mongoose");
 
-function homeController() {
+function authController() {
+  const _getRedirectUrl = (req) => {
+    return "/";
+    return req.user.role === "admin" ? "/admin/orders" : "/customer/orders";
+  };
+
+  loginUser = async (req, res, next) => {
+    const { email, password } = req.body;
+    // Validate request
+    if (!email || !password) {
+      req.flash("error", "All fields are required");
+      return res.redirect("/login");
+    }
+    passport.authenticate("local", (err, user, info) => {
+      console.log(user);
+      if (err) {
+        req.flash("error", info.message);
+        return next(err);
+      }
+      if (!user) {
+        req.flash("error", info.message);
+        return res.redirect("/login");
+      }
+      req.logIn(user, (err) => {
+        if (err) {
+          req.flash("error", info.message);
+          return next(err);
+        }
+        return res.redirect(_getRedirectUrl(req));
+      });
+    })(req, res, next);
+  };
+
   return {
     login(req, res) {
       res.render("./auth/login");
@@ -10,7 +43,7 @@ function homeController() {
     register(req, res) {
       res.render("./auth/register");
     },
-    async registerUser(req, res) {
+    registerUser(req, res, next) {
       const { name, email, password } = req.body;
       if (!(name && email && password)) {
         req.flash("error", "All fields are required");
@@ -20,64 +53,41 @@ function homeController() {
       }
 
       // check if same email user exists
-      User.exists({ email: email }, (err, result) => {
+      User.exists({ email: email }, async (err, result) => {
         if (result) {
           req.flash("error", "Email already exists");
           req.flash("name", name);
           req.flash("email", email);
           return res.redirect("/register");
         }
-      });
-
-      // password hash
-      const hashedPassword = await bcrypt.hash(password, 10);
-      // Create a User
-      const user = new User({
-        name: name,
-        email: email,
-        password: hashedPassword,
-      });
-      try {
-        await user.save();
-        // Login
-        res.redirect("/");
-      } catch (e) {
-        req.flash("error", "Something went wrong");
-        return res.redirect("/redirect");
-      }
-    },
-    async loginUser(req, res, next) {
-      const { email, password } = req.body;
-      // Validate request
-      if (!email || !password) {
-        req.flash("error", "All fields are required");
-        return res.redirect("/login");
-      }
-      passport.authenticate("local", (err, user, info) => {
-        console.log(user);
-        if (err) {
-          req.flash("error", info.message);
-          return next(err);
-        }
-        if (!user) {
-          req.flash("error", info.message);
-          return res.redirect("/login");
-        }
-        req.logIn(user, (err) => {
-          if (err) {
-            req.flash("error", info.message);
-            return next(err);
-          }
-          console.log(req.user);
-          return res.redirect("/");
+        // password hash
+        const hashedPassword = await bcrypt.hash(password, 10);
+        // Create a User
+        const user = new User({
+          name: name,
+          email: email,
+          password: hashedPassword,
         });
-      })(req, res, next);
+        try {
+          await user.save();
+          // Login
+          await loginUser(req, res, next);
+        } catch (e) {
+          req.flash("error", "Something went wrong");
+          return res.redirect("/register");
+        }
+      });
     },
-    async logoutUser(req, res, next) {
+    loginUser,
+    logoutUser(req, res, next) {
+      console.log("***********");
       req.logout();
       return res.redirect("/login");
+    },
+    googleLogin(req, res, next) {
+      return res.redirect(_getRedirectUrl(req));
     },
   };
 }
 
-module.exports = homeController;
+module.exports = authController;

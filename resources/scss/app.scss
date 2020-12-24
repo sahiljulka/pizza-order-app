@@ -27,9 +27,10 @@ nav li a {
 .btn-primary {
   background: $primary;
   transition: $smooth;
-
+}
+.btn {
+  outline: none;
   &:hover {
-    background: $primary-hover;
     outline: none;
   }
 }

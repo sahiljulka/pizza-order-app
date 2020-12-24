@@ -26,15 +26,15 @@
           <li class="ml-6"><a href="#">Menu</a></li>
           <li class="ml-6"><a href="#">Offers</a></li>
           <% if(user) { %>
-          <form id="logoutForm" action="/logout" method="post">
-            <li class="ml-6">
+          <li class="ml-6">
+            <form id="logoutForm" action="/logout" method="post">
               <a
                 onclick="document.getElementById('logoutForm').submit()"
                 href="#"
                 >Logout</a
               >
-            </li>
-          </form>
+            </form>
+          </li>
           <% } else { %>
           <li class="ml-6"><a href="register">Register</a></li>
           <li class="ml-6"><a href="login">Login</a></li>

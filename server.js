@@ -10,6 +10,7 @@ const flash = require("express-flash");
 const MongoDbStore = require("connect-mongo")(session);
 const passport = require("passport");
 const passportInit = require("./app/config/passport");
+const passportGoogleInit = require("./app/config/passportGoogleOAuth");
 
 require("dotenv").config({
   path: `${path.join(__dirname, "/app/config/.env")}`,
@@ -37,6 +38,7 @@ app.use(
 );
 
 passportInit(passport);
+passportGoogleInit(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -50,8 +52,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.locals.session = req.session;
-  console.log("******");
-  console.log(req.session);
   res.locals.user = req.user;
   next();
 });
