@@ -5,8 +5,7 @@ var mongoose = require("mongoose");
 
 function authController() {
   const _getRedirectUrl = (req) => {
-    return "/";
-    return req.user.role === "admin" ? "/admin/orders" : "/customer/orders";
+    return req.user.role === "admin" ? "/adminorders" : "/orders";
   };
 
   loginUser = async (req, res, next) => {

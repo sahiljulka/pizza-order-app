@@ -50,7 +50,7 @@ function init(passport) {
   });
 
   passport.deserializeUser(function(id, cb) {
-    User.find({ _id: id }, function(err, user) {
+    User.findOne({ _id: id }, function(err, user) {
       if (err) {
         return cb(err);
       }

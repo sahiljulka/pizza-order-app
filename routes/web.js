@@ -3,7 +3,12 @@ const passport = require("passport");
 const homeController = require("../app/http/controllers/homeController");
 const authController = require("../app/http/controllers/authController");
 const cartController = require("../app/http/controllers/cartController");
+const orderController = require("../app/http/controllers/orderController");
+const adminOrderController = require("../app/http/controllers/admin/orderController");
+
 const guest = require("../app/http/middlewares/guest");
+const auth = require("../app/http/middlewares/auth");
+const admin = require("../app/http/middlewares/admin");
 
 router.get("/", homeController().index);
 
@@ -33,5 +38,11 @@ router.get(
 );
 
 router.post("/logout", authController().logoutUser);
+
+router.post("/orders", auth, orderController().postOrder);
+
+router.get("/orders", auth, orderController().index);
+
+router.get("/adminorders", admin, adminOrderController().index);
 
 module.exports = router;
