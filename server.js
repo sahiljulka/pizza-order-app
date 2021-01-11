@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const ejs = require("ejs");
 const expressLayout = require("express-ejs-layouts");
 const webRoutes = require("./routes/web");
 const mongoose = require("mongoose");

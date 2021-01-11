@@ -5,6 +5,7 @@ const authController = require("../app/http/controllers/authController");
 const cartController = require("../app/http/controllers/cartController");
 const orderController = require("../app/http/controllers/orderController");
 const adminOrderController = require("../app/http/controllers/admin/orderController");
+const statusController = require("../app/http/controllers/admin/statusController");
 
 const guest = require("../app/http/middlewares/guest");
 const auth = require("../app/http/middlewares/auth");
@@ -43,6 +44,10 @@ router.post("/orders", auth, orderController().postOrder);
 
 router.get("/orders", auth, orderController().index);
 
+router.get("/orders/:id", auth, orderController().show);
+
 router.get("/adminorders", admin, adminOrderController().index);
+
+router.post("/adminorders/status", admin, statusController().changeStatus);
 
 module.exports = router;

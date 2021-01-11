@@ -1,10 +1,13 @@
 import Noty from "noty";
 import initAdmin from "./admin.js";
+import moment from "moment";
 
 const $ = document.querySelectorAll.bind(document);
 
 const addToCartButtons = $(".add-to-cart");
 const counterLabel = $(".counter")[0];
+const order = $("#hiddenInput")[0];
+const statuses = $(".status_line");
 
 async function updateCart(pizza) {
   try {
@@ -47,3 +50,32 @@ if (alertMsg) {
 }
 
 initAdmin();
+
+let time = document.createElement("small");
+
+function updateStatus(order) {
+  if (!order) return;
+  order = JSON.parse(order.value);
+
+  statuses.forEach((status) => {
+    status.classList.remove("step-completed");
+    status.classList.remove("current");
+  });
+  let stepCompleted = true;
+  statuses.forEach((status) => {
+    let dataProp = status.dataset.status;
+    if (stepCompleted) {
+      status.classList.add("step-completed");
+    }
+    if (dataProp === order.status) {
+      stepCompleted = false;
+      time.innerText = moment(order.updatedAt).format("hh:mm A");
+      status.appendChild(time);
+      if (status.nextElementSibling) {
+        status.nextElementSibling.classList.add("current");
+      }
+    }
+  });
+}
+
+updateStatus(order);

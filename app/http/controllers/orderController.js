@@ -37,6 +37,14 @@ function orderController() {
         moment: moment,
       });
     },
+    async show(req, res) {
+      const order = await Order.findById(req.params.id);
+
+      if (order.customerId.toString() === req.user._id.toString()) {
+        return res.render("customers/singleOrder", { order });
+      }
+      return res.redirect("/");
+    },
   };
 }
 

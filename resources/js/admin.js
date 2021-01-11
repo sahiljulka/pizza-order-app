@@ -47,7 +47,7 @@ function generateMarkup(orders) {
             <td class="border px-4 py-2">${order.address}</td>
             <td class="border px-4 py-2">
                 <div class="inline-block relative w-64">
-                    <form action="/admin/order/status" method="POST">
+                    <form action="/adminorders/status" method="POST">
                         <input type="hidden" name="orderId" value="${
                           order._id
                         }">
