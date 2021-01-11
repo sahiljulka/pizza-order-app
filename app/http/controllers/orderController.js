@@ -19,9 +19,13 @@ function orderController() {
       });
       try {
         await order.save();
-        req.flash("success", "Orders placed successfully");
-        req.session.cart = { items: {}, totalQty: 0, totalPrice: 0 };
-        return res.redirect("/orders");
+        Order.populate(order, { path: "customerId" }, (err, placedOrder) => {
+          req.flash("success", "Orders placed successfully");
+          req.session.cart = { items: {}, totalQty: 0, totalPrice: 0 };
+          const eventEmitter = req.app.get("eventEmitter");
+          eventEmitter.emit("orderPlaced", placedOrder);
+          return res.redirect("/orders");
+        });
       } catch (ex) {
         req.flash("error", "Something went wrong");
         return res.redirect("/cart");

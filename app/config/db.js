@@ -10,13 +10,7 @@ function connectDB() {
   });
   const connection = mongoose.connection;
 
-  connection
-    .once("open", () => {
-      console.log("DB Connected");
-    })
-    .catch((err) => {
-      console.log("Connection failed");
-    });
+  connection.once("open", () => {}).catch((err) => {});
   return connection;
 }
 

@@ -16,7 +16,6 @@ function authController() {
       return res.redirect("/login");
     }
     passport.authenticate("local", (err, user, info) => {
-      console.log(user);
       if (err) {
         req.flash("error", info.message);
         return next(err);
@@ -79,7 +78,6 @@ function authController() {
     },
     loginUser,
     logoutUser(req, res, next) {
-      console.log("***********");
       req.logout();
       return res.redirect("/login");
     },

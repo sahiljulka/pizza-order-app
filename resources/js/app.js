@@ -1,12 +1,15 @@
 import Noty from "noty";
 import initAdmin from "./admin.js";
 import moment from "moment";
+import * as io from "socket.io/client-dist/socket.io";
 
 const $ = document.querySelectorAll.bind(document);
 
 const addToCartButtons = $(".add-to-cart");
 const counterLabel = $(".counter")[0];
-const order = $("#hiddenInput")[0];
+const order = $("#hiddenInput")[0]
+  ? JSON.parse($("#hiddenInput")[0].value)
+  : null;
 const statuses = $(".status_line");
 
 async function updateCart(pizza) {
@@ -49,13 +52,10 @@ if (alertMsg) {
   }, 2000);
 }
 
-initAdmin();
-
 let time = document.createElement("small");
 
 function updateStatus(order) {
   if (!order) return;
-  order = JSON.parse(order.value);
 
   statuses.forEach((status) => {
     status.classList.remove("step-completed");
@@ -79,3 +79,30 @@ function updateStatus(order) {
 }
 
 updateStatus(order);
+
+(function setSocket() {
+  let socket = io();
+  initAdmin(socket);
+
+  const pathName = window.location.pathname;
+  console.log(pathName);
+  if (pathName.includes("adminorders")) {
+    socket.emit("join", `adminRoom`);
+  }
+
+  if (!order) return;
+  socket.emit("join", `order_${order._id}`);
+
+  socket.on("orderUpdated", (data) => {
+    const updatedOrder = { ...order };
+    updatedOrder.updatedAt = moment().format("hh:mm A");
+    updatedOrder.status = data.status;
+    updateStatus(updatedOrder);
+    new Noty({
+      type: "success",
+      timeout: 1000,
+      text: "Order updated",
+      progressBar: false,
+    }).show();
+  });
+})();

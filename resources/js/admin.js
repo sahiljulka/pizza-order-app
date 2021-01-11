@@ -1,7 +1,8 @@
 const $ = document.querySelectorAll.bind(document);
 const moment = require("moment");
+import Noty from "noty";
 
-async function initAdmin() {
+async function initAdmin(socket) {
   const orderTableBody = $("#orderTableBody")[0];
   let orders = [];
 
@@ -15,12 +16,24 @@ async function initAdmin() {
   try {
     const res = await response.json();
     orders = res;
+    //console.log(orders);
     if (orders.length) {
       orderTableBody.innerHTML = generateMarkup(orders);
     }
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
+
+  socket.on("orderPlaced", (order) => {
+    console.log(order);
+    new Noty({
+      type: "success",
+      timeout: 1000,
+      text: "New order!",
+      progressBar: false,
+    }).show();
+    orders.unshift(order);
+    orderTableBody.innerHTML = "";
+    orderTableBody.innerHTML = generateMarkup(orders);
+  });
 }
 
 function renderItems(items) {

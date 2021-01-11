@@ -10,6 +10,8 @@ const MongoDbStore = require("connect-mongo")(session);
 const passport = require("passport");
 const passportInit = require("./app/config/passport");
 const passportGoogleInit = require("./app/config/passportGoogleOAuth");
+const Emitter = require("events");
+const { EventEmitter } = require("events");
 
 require("dotenv").config({
   path: `${path.join(__dirname, "/app/config/.env")}`,
@@ -25,6 +27,9 @@ let mongoStore = new MongoDbStore({
   mongooseConnection: connection,
   collection: "sessions",
 });
+
+const eventEmitter = new Emitter();
+app.set("eventEmitter", eventEmitter);
 
 app.use(
   session({
@@ -62,6 +67,22 @@ app.use("/", webRoutes);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./resources/views"));
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server started listening on ${PORT}`);
+});
+
+const io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  socket.on("join", (orderId) => {
+    socket.join(orderId);
+  });
+});
+
+eventEmitter.on("orderUpdated", (data) => {
+  io.to(`order_${data.id}`).emit("orderUpdated", data);
+});
+
+eventEmitter.on("orderPlaced", (data) => {
+  io.to(`adminRoom`).emit("orderPlaced", data);
 });
