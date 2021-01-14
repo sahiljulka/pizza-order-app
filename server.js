@@ -17,11 +17,11 @@ require("dotenv").config({
   path: `${path.join(__dirname, "/app/config/.env")}`,
 });
 
-//DB CONNECTION
-const connection = connectDB();
-
 const app = express();
 const PORT = process.env.PORT;
+
+//DB CONNECTION
+const connection = connectDB();
 
 let mongoStore = new MongoDbStore({
   mongooseConnection: connection,

@@ -11,7 +11,7 @@ function init(passport) {
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/callback",
+        callbackURL: process.env.CALLBACK_URL,
       },
       function(accessToken, refreshToken, profile, done) {
         const newUser = getInfo(profile);
