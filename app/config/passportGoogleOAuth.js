@@ -42,7 +42,7 @@ function init(passport) {
 
 function getInfo(profile) {
   return {
-    name: profile?.displayName || "user",
+    name: (profile && profile.displayName) || "user",
     email: profile.emails[0].value,
   };
 }
