@@ -50,4 +50,6 @@ router.get("/adminorders", admin, adminOrderController().index);
 
 router.post("/adminorders/status", admin, statusController().changeStatus);
 
+router.get("*", (req, res) => res.redirect("/"));
+
 module.exports = router;

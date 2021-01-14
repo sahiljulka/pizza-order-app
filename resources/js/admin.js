@@ -16,14 +16,12 @@ async function initAdmin(socket) {
   try {
     const res = await response.json();
     orders = res;
-    //console.log(orders);
     if (orders.length) {
       orderTableBody.innerHTML = generateMarkup(orders);
     }
   } catch (e) {}
 
   socket.on("orderPlaced", (order) => {
-    console.log(order);
     new Noty({
       type: "success",
       timeout: 1000,

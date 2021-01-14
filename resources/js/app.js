@@ -82,11 +82,10 @@ updateStatus(order);
 
 (function setSocket() {
   let socket = io();
-  initAdmin(socket);
 
   const pathName = window.location.pathname;
-  console.log(pathName);
   if (pathName.includes("adminorders")) {
+    initAdmin(socket);
     socket.emit("join", `adminRoom`);
   }
 

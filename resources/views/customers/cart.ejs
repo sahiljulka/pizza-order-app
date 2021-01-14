@@ -1,6 +1,6 @@
 <section class="cart py-16">
   <% if(session.cart) {%>
-  <div class="order container mx-auto w-1/2">
+  <div class="order container mx-auto xl:w-1/2">
     <div class="flex items-center border-b border-gray-300 pb-4">
       <img src="/img/cart-black.png" alt="" />
       <h1 class="font-bold ml-4 text-2xl">Order summary</h1>
@@ -53,7 +53,7 @@
       </div>
       <% } else {%>
       <a
-        href=""
+        href="/login"
         class="inline-block cursor-pointer btn-primary px-6 py-2 rounded-full text-white font-bold mt-6"
         >Login to continue</a
       >
